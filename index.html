@@ -56,6 +56,22 @@
 
         <section id="hospitals" class="search-section">
             <h2>🏥 Hospitals & Medicine (Kasba)</h2>
+            
+            <div class="search-box" style="background: white; padding: 25px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--primary-color);">
+                <h3 style="width: 100%; text-align: center; margin-bottom: 15px; color: var(--primary-color);">💊 Find Basic Medicine</h3>
+                <p style="width: 100%; text-align: center; margin-bottom: 15px; font-size: 14px;">সাধারণ ঔষধগুলো কসবার কোন ফার্মেসিতে পাওয়া যাবে তা খুঁজুন</p>
+                <select id="medicine-select" style="width: 60%; max-width: 400px;">
+                    <option value="">-- সাধারণ ঔষধ সিলেক্ট করুন --</option>
+                    <option value="napa">Napa / Paracetamol (জ্বর/ব্যথা)</option>
+                    <option value="seclo">Seclo 20mg (গ্যাস্ট্রিক)</option>
+                    <option value="alatrol">Alatrol (অ্যালার্জি/সর্দি)</option>
+                    <option value="monas">Monas 10 (শ্বাসকষ্ট/হাঁপানি)</option>
+                    <option value="flagyl">Flagyl (পেট খারাপ/ডায়রিয়া)</option>
+                </select>
+                <button onclick="findMedicineShop()">Search Shop</button>
+                <div id="medicine-shop-result" style="width: 100%; margin-top: 15px; text-align: center;"></div>
+            </div>
+
             <div id="hospital-info-container" class="info-container"></div>
         </section>
 
