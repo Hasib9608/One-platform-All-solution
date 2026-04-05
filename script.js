@@ -276,69 +276,69 @@ function renderFoodData() {
     `;
 }
 // ==========================================
-// 8. DATA: JOB & INTERNSHIP VACANCIES (NEW)
-// কসবার বিভিন্ন প্রতিষ্ঠানের চাকরির সুযোগ
+// 8. DATA: JOB & INTERNSHIP VACANCIES (Updated with Local Storage)
 // ==========================================
 const jobVacanciesData = [
-    { 
-        org: "Kasba Mohila Degree College", 
-        role: "Biology Teacher (জীববিজ্ঞান শিক্ষক)", 
-        type: "Full-Time", 
-        work: "একাদশ ও দ্বাদশ শ্রেণীর জীববিজ্ঞান ক্লাস ও ল্যাব পরিচালনা", 
-        seats: 1, 
-        website: "https://www.kmuc.edu.bd/", 
-        mapLink: "https://www.google.com/maps/search/Kasba+Mohila+Degree+College" 
-    },
-    { 
-        org: "Dhonnobad Printers", 
-        role: "Junior Designer", 
-        type: "Part-Time", 
-        work: "অ্যাডোব ইলাস্ট্রেটর দিয়ে ব্যানার ও ভিজিটিং কার্ড ডিজাইন", 
-        seats: 1, 
-        website: "https://dhonnobadprinters.com/", 
-        mapLink: "" 
-    },
-    { 
-        org: "Maa Pharmacy", 
-        role: "Pharmacy Assistant", 
-        type: "Intern", 
-        work: "ওষুধ গুছিয়ে রাখা ও প্রেসক্রিপশন পড়তে সাহায্য করা", 
-        seats: 2, 
-        website: "", 
-        mapLink: "" 
-    },
-    { 
-        org: "MF Computer Center", 
-        role: "Data Entry Operator", 
-        type: "Part-Time", 
-        work: "অনলাইন ফরম ফিলাপ, ইমেইল এবং টাইপিং এর কাজ", 
-        seats: 3, 
-        website: "", 
-        mapLink: "" 
-    }
+    { org: "Kasba Mohila Degree College", role: "Biology Teacher (জীববিজ্ঞান শিক্ষক)", type: "Full-Time", work: "একাদশ ও দ্বাদশ শ্রেণীর জীববিজ্ঞান ক্লাস", seats: 1 },
+    { org: "Dhonnobad Printers", role: "Junior Designer", type: "Part-Time", work: "ব্যানার ও ভিজিটিং কার্ড ডিজাইন", seats: 1 },
+    { org: "Maa Pharmacy", role: "Pharmacy Assistant", type: "Intern", work: "ওষুধ গুছিয়ে রাখা ও সাহায্য করা", seats: 2 }
 ];
+
+// ফর্ম থেকে ডাটা নিয়ে সেভ করার ফাংশন (সবার নিচে বা উপরে রাখতে পারেন)
+document.addEventListener('DOMContentLoaded', function() {
+    const submitBtn = document.getElementById("submit-job-btn");
+    if(submitBtn) {
+        submitBtn.addEventListener("click", function() {
+            const orgName = document.getElementById("job-org").value;
+            const roleName = document.getElementById("job-role").value;
+            const jobType = document.getElementById("job-type").value;
+            const seatsNum = document.getElementById("job-seats").value;
+
+            if(orgName === "" || roleName === "" || seatsNum === "") {
+                alert("দয়া করে ফর্মের সব তথ্য ঠিকভাবে পূরণ করুন!");
+                return;
+            }
+
+            const newJob = {
+                org: orgName,
+                role: roleName,
+                type: jobType,
+                work: "নতুন পোস্ট করা কাজ", // ডিফল্ট কাজ
+                seats: seatsNum
+            };
+
+            // Local Storage এ সেভ করা
+            let savedJobs = JSON.parse(localStorage.getItem("customJobs")) || [];
+            savedJobs.push(newJob);
+            localStorage.setItem("customJobs", JSON.stringify(savedJobs));
+
+            alert("✅ নতুন চাকরির খবর সফলভাবে যোগ করা হয়েছে!");
+            
+            // ফর্ম খালি করে দেওয়া
+            document.getElementById("job-org").value = "";
+            document.getElementById("job-role").value = "";
+            document.getElementById("job-seats").value = "";
+
+            // ডাটা রিফ্রেশ করা
+            renderJobsData();
+        });
+    }
+});
 
 // স্কিল ও জব সেকশন দেখানোর ফাংশন (আপডেটেড)
 function renderJobsData() {
     const container = document.getElementById("job-info-container");
+    if(!container) return;
 
-    // শপ এবং কর্পোরেট ভ্যাকেন্সি কার্ড তৈরির লজিক
+    // লোকাল স্টোরেজ থেকে ইউজারের দেওয়া নতুন জবগুলো আনা
+    let savedJobs = JSON.parse(localStorage.getItem("customJobs")) || [];
+    
+    // আগের ডাটা এবং নতুন ডাটা একসাথে করা
+    const allJobs = [...jobVacanciesData, ...savedJobs];
+
     let jobsHTML = "";
-    jobVacanciesData.forEach(job => {
-        // চাকরির ধরন অনুযায়ী ব্যাজের রঙ বদলাবে
-        let badgeColor = "";
-        if(job.type === "Intern") badgeColor = "#3498db"; // নীল রঙ
-        else if(job.type === "Part-Time") badgeColor = "#f39c12"; // কমলা রঙ
-        else badgeColor = "#e74c3c"; // লাল রঙ (Full-Time)
-
-        // ওয়েবসাইট ও ম্যাপের বাটন যোগ করা (যদি ডাটাবেজে লিংক দেওয়া থাকে)
-        let actionButtons = "";
-        if(job.website) {
-            actionButtons += `<a href="${job.website}" target="_blank" style="display:inline-block; margin-top:10px; margin-right:10px; background:#2ecc71; color:white; padding:6px 12px; text-decoration:none; border-radius:5px; font-size:12px; font-weight:bold;">🌐 ওয়েবসাইট ভিজিট করুন</a>`;
-        }
-        if(job.mapLink) {
-            actionButtons += `<a href="${job.mapLink}" target="_blank" style="display:inline-block; margin-top:10px; background:#e74c3c; color:white; padding:6px 12px; text-decoration:none; border-radius:5px; font-size:12px; font-weight:bold;">🗺️ গুগল ম্যাপ লোকেশন</a>`;
-        }
+    allJobs.forEach(job => {
+        let badgeColor = job.type === "Intern" ? "#3498db" : (job.type === "Part-Time" ? "#f39c12" : "#e74c3c");
 
         jobsHTML += `
             <div style="background: #ffffff; border: 1px solid #dcdde1; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
@@ -348,37 +348,14 @@ function renderJobsData() {
                 </div>
                 <p style="margin: 5px 0; font-size: 14px; color: #34495e;"><strong>📌 পদের নাম:</strong> ${job.role}</p>
                 <p style="margin: 5px 0; font-size: 14px; color: #34495e;"><strong>👨‍💻 কাজের ধরন:</strong> ${job.work}</p>
-                <p style="margin: 5px 0; font-size: 14px; font-weight: bold; color: #d35400;">🪑 খালি পদ (Vacancy): ${job.seats} টি</p>
-                ${actionButtons}
+                <p style="margin: 5px 0; font-size: 14px; font-weight: bold; color: #d35400;">🪑 খালি পদ: ${job.seats} টি</p>
             </div>
         `;
     });
 
-    // স্ক্রিনে আগের দুটো ব্লকের নিচে নতুন জব ভ্যাকেন্সি ব্লক যোগ করা হলো
     container.innerHTML = `
-        <div class="info-block" style="border-left-color: #8e44ad;">
-            <h3>💻 ব্যানার ডিজাইন, ডাটা এন্ট্রি এবং কাজের জায়গা</h3>
-            <p>স্টুডেন্টরা পার্ট-টাইম বা চুক্তিভিত্তিক ডিজাইনের কাজের জন্য নিচের প্রতিষ্ঠানগুলোতে যোগাযোগ করতে পারে:</p>
-            <ul>
-                <li style="background: #f8f9fa; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px;"><strong>১. এমএফ কম্পিউটার সেন্টার:</strong> ইমাম পাড়া, কসবা সদর।</li>
-                <li style="background: #f8f9fa; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px;"><strong>২. তানভীর ফটোকপি ও কম্পিউটার ট্রেনিং সেন্টার:</strong> বায়েক, সালদানদী, কসবা।</li>
-                <li style="background: #f8f9fa; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px;"><strong>৩. কসবা উপজেলা সুপার মার্কেট ও নতুন বাজার:</strong> ডিজিটাল সাইন ও প্রিন্টিং এর প্রচুর কাজ।</li>
-                <li style="background: #f8f9fa; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px;"><strong>৪. ধন্যবাদ প্রিন্টার্স (Dhonnobad Printers):</strong> গ্রাফিক্স ডিজাইনের কাজের জন্য চমৎকার প্রতিষ্ঠান।</li>
-            </ul>
-        </div>
-        
-        <div class="info-block" style="border-left-color: #3498db;">
-            <h3>🚀 স্কিল ডেভেলপমেন্ট ও ট্রেনিং সেন্টার (শেখার জায়গা)</h3>
-            <ul>
-                <li style="background: #f8f9fa; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px;"><strong>১. উপজেলা যুব উন্নয়ন অধিদপ্তর:</strong> কসবা উপজেলা পরিষদ চত্বর। (সরকারি সনদের সুবিধাসহ কম খরচে কোর্স)।</li>
-                <li style="background: #f8f9fa; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px;"><strong>২. কসবা সরকারি টেকনিক্যাল স্কুল এন্ড কলেজ:</strong> আইটি এবং টেকনিক্যাল শর্ট কোর্স।</li>
-                <li style="background: #f8f9fa; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 5px;"><strong>৩. প্রাইভেট ট্রেনিং সেন্টার:</strong> ইমাম পাড়ার এফএম/এমএফ কম্পিউটার ট্রেনিং সেন্টার।</li>
-            </ul>
-        </div>
-
         <div class="info-block" style="border-left-color: #e74c3c; background-color: #fff9f9;">
-            <h3>📢 চলমান চাকরির নিয়োগ ও ইন্টার্নশিপ (Job Vacancies)</h3>
-            <p style="margin-bottom: 15px; font-size: 14px; color: #555;">কসবার বিভিন্ন প্রতিষ্ঠান, কলেজ এবং কর্পোরেট সেক্টরে পার্ট-টাইম, ফুল-টাইম বা ইন্টার্নশিপ করার বর্তমান সুযোগ:</p>
+            <h3>📢 চলমান চাকরির নিয়োগ ও ইন্টার্নশিপ</h3>
             ${jobsHTML}
         </div>
     `;
