@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine Kasba - Community Support Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🤝 LifeLine Kasba</div>
+        <ul class="nav-links">
+            <li><a href="#emergency">Emergency</a></li>
+            <li><a href="#blood">Blood</a></li>
+            <li><a href="#hospitals">Hospitals</a></li>
+            <li><a href="#food">Food & Orgs</a></li>
+            <li><a href="#jobs">Jobs & Skills</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Empowering Kasba Upazila Together</h1>
+        <p>Your local hub for emergency support, healthcare, food sharing, and skill development in Brahmanbaria.</p>
+    </header>
+
+    <main>
+        <section id="emergency" class="card-section">
+            <h2>🚨 National Emergency Numbers (BD)</h2>
+            <div class="grid-container" id="emergency-grid"></div>
+        </section>
+
+        <section id="blood" class="search-section">
+            <h2>🩸 Search Blood Donors & Banks</h2>
+            <div class="search-box">
+                <select id="blood-group">
+                    <option value="">Select Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="B+">B+</option>
+                    <option value="O+">O+</option>
+                    <option value="AB+">AB+</option>
+                    <option value="O-">O-</option>
+                </select>
+                <select id="blood-area">
+                    <option value="">Select Union/Area</option>
+                    <option value="kasba sadar">Kasba Sadar</option>
+                    <option value="kuti">Kuti</option>
+                    <option value="mehari">Mehari</option>
+                    <option value="gopinathpur">Gopinathpur</option>
+                </select>
+                <button onclick="searchBlood()">Search</button>
+            </div>
+            <div id="blood-results" class="results-container"></div>
+        </section>
+
+        <section id="hospitals" class="search-section">
+            <h2>🏥 Hospitals & Medicine (Kasba)</h2>
+            <div id="hospital-info-container" class="info-container"></div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="food" class="search-section">
+            <h2>🍲 Restaurants & Food Share</h2>
+            <div id="food-info-container" class="info-container"></div>
+        </section>
+
+        <section id="jobs" class="search-section">
+            <h2>💻 Local Skills & Job Opportunities</h2>
+            <p style="text-align:center; margin-bottom: 20px;">কসবার স্টুডেন্টদের জন্য স্কিল ডেভেলপমেন্ট ও পার্ট-টাইম কাজের সুযোগ</p>
+            <div id="job-info-container" class="info-container"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Science Fair Project © 2026 | Built specifically for Kasba, Brahmanbaria</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
