@@ -35,7 +35,7 @@ const medicineDatabase = {
 
 // ==========================================
 // 4. INITIALIZATION & RENDERING
-// ওয়েবসাইট ওপেন হলেই এই ফাংশনগুলো রান হয়ে সব ডাটা স্ক্রিনে দেখাবে
+// ওয়েবসাইট ওপেন হলেই এই ফাংশনগুলো রান হয়ে সব ডাটা স্ক্রিনে দেখাবে
 // ==========================================
 window.onload = function() {
     renderEmergency(); // ইমার্জেন্সি নাম্বার লোড করবে
@@ -108,58 +108,6 @@ function renderHospitals() {
     `;
 }
 
-// ফুড ও রেস্টুরেন্ট সেকশন দেখানোর ফাংশন
-function renderFoodData() {
-    const container = document.getElementById("food-info-container");
-    container.innerHTML = `
-        <div class="info-block" style="border-left-color: #e67e22;">
-            <h3>🍽️ কসবার কয়েকটি পরিচিত রেস্টুরেন্ট</h3>
-            <ul>
-                <li>১. দি ফুড প্যালেস (The Food Palace)</li>
-                <li>২. টেস্টি বাইট রেস্টুরেন্ট (Tasty Bite Restaurant)</li>
-                <li>৩. ঢাকা কাচ্চি ভাই (Dhaka Kacchi Bhai)</li>
-                <li>৪. আল কারিমা রেস্টুরেন্ট (Al Karima Restaurant)</li>
-                <li>৫. কাচ্চি ডাইন রেস্টুরেন্ট (Kacchi Dine Restaurant)</li>
-            </ul>
-            <p style="font-size:14px; margin-top:10px;"><em>নোট: এখানে কাচ্চি বিরিয়ানি থেকে শুরু করে ফাস্টফুড, চাইনিজ এবং রেগুলার বাংলা খাবার পাওয়া যায়।</em></p>
-        </div>
-        <div class="info-block" style="border-left-color: #27ae60;">
-            <h3>🤝 কমিউনিটি ফুড শেয়ার / স্বেচ্ছাসেবী সংগঠন</h3>
-            <p>পশ্চিমা দেশগুলোর মতো নির্দিষ্ট "ফুড ব্যাংক" না থাকলেও কসবায় বিভিন্ন সংগঠন বিনামূল্যে খাবার বিতরণ বা ত্রাণ দেওয়ার কাজ করে:</p>
-            <ul>
-                <li><strong>১. স্থানীয় স্বেচ্ছাসেবী ও যুব সংগঠন:</strong> ছাত্র কল্যাণ পরিষদ, ব্লাড ডোনেশন ক্লাব এবং 'আলোকিত কসবা' এর মতো গ্রুপ প্রায়ই "১ টাকার আহার" আয়োজন করে।</li>
-                <li><strong>২. জাতীয় পর্যায়ের ফাউন্ডেশন:</strong> আস-সুন্নাহ ফাউন্ডেশন (As-Sunnah Foundation) এবং বিদ্যানন্দ ফাউন্ডেশন (Bidyanondo)-এর স্থানীয় স্বেচ্ছাসেবকরা কসবায় খাদ্য সহায়তা করে।</li>
-            </ul>
-        </div>
-    `;
-}
-
-// স্কিল ও জব সেকশন দেখানোর ফাংশন
-function renderJobsData() {
-    const container = document.getElementById("job-info-container");
-    container.innerHTML = `
-        <div class="info-block" style="border-left-color: #8e44ad;">
-            <h3>💻 ব্যানার ডিজাইন, ডাটা এন্ট্রি এবং কাজের জায়গা</h3>
-            <p>স্টুডেন্টরা পার্ট-টাইম বা চুক্তিভিত্তিক ডিজাইনের কাজের জন্য নিচের প্রতিষ্ঠানগুলোতে যোগাযোগ করতে পারে:</p>
-            <ul>
-                <li><strong>১. এমএফ কম্পিউটার সেন্টার:</strong> ইমাম পাড়া, কসবা সদর।</li>
-                <li><strong>২. তানভীর ফটোকপি ও কম্পিউটার ট্রেনিং সেন্টার:</strong> বায়েক, সালদানদী, কসবা।</li>
-                <li><strong>৩. কসবা উপজেলা সুপার মার্কেট ও নতুন বাজার:</strong> ডিজিটাল সাইন ও প্রিন্টিং এর প্রচুর কাজ।</li>
-                <li><strong>৪. ধন্যবাদ প্রিন্টার্স (Dhonnobad Printers):</strong> গ্রাফিক্স ডিজাইনের কাজের জন্য চমৎকার প্রতিষ্ঠান। <br>
-                <a href="https://dhonnobadprinters.com/" target="_blank" class="link-btn">🌐 ধন্যবাদ প্রিন্টার্স ওয়েবসাইট ভিজিট করুন</a></li>
-            </ul>
-        </div>
-        <div class="info-block" style="border-left-color: #3498db;">
-            <h3>🚀 স্কিল ডেভেলপমেন্ট ও ট্রেনিং সেন্টার (শেখার জায়গা)</h3>
-            <ul>
-                <li><strong>১. উপজেলা যুব উন্নয়ন অধিদপ্তর:</strong> কসবা উপজেলা পরিষদ চত্বর। (সরকারি সনদের সুবিধাসহ কম খরচে কোর্স)।</li>
-                <li><strong>২. কসবা সরকারি টেকনিক্যাল স্কুল এন্ড কলেজ:</strong> আইটি এবং টেকনিক্যাল শর্ট কোর্স।</li>
-                <li><strong>৩. প্রাইভেট ট্রেনিং সেন্টার:</strong> ইমাম পাড়ার এফএম/এমএফ কম্পিউটার ট্রেনিং সেন্টার, এবং ইউনিয়ন ডিজিটাল সেন্টার (UDC)-সমূহ।</li>
-            </ul>
-        </div>
-    `;
-}
-
 // ==========================================
 // 5. SEARCH BLOOD FUNCTION
 // ব্লাড ডোনার খোঁজার লজিক
@@ -170,7 +118,7 @@ function searchBlood() {
     const res = document.getElementById("blood-results");
     res.innerHTML = "";
     
-    // ইউজার যে গ্রুপ এবং এরিয়া সিলেক্ট করেছে তার সাথে ডাটাবেজ মেলাবে
+    // ইউজার যে গ্রুপ এবং এরিয়া সিলেক্ট করেছে তার সাথে ডাটাবেজ মেলাবে
     const results = bloodDonors.filter(d => 
         (d.group === "Any" || group === "" || d.group === group) && 
         (area === "" || d.area.includes(area))
@@ -193,7 +141,7 @@ function searchBlood() {
 
 // ==========================================
 // 6. SEARCH MEDICINE FUNCTION (NEW)
-// নির্দিষ্ট ঔষধ কসবার কোন ফার্মেসিতে পাওয়া যাবে তা খোঁজার লজিক
+// নির্দিষ্ট ঔষধ কসবার কোন ফার্মেসিতে পাওয়া যাবে তা খোঁজার লজিক
 // ==========================================
 function findMedicineShop() {
     const medId = document.getElementById("medicine-select").value;
@@ -211,16 +159,17 @@ function findMedicineShop() {
     // স্ক্রিনে ফলাফল এবং গুগপ ম্যাপের লিংক দেখাবে
     resultDiv.innerHTML = `
         <div style="background: #e8f8f5; padding: 15px; border-radius: 8px; display: inline-block; text-align: left; border: 1px solid #1abc9c;">
-            <h4 style="color: #16a085; margin-bottom: 5px;">✅ ${medData.name} পাওয়া যাচ্ছে!</h4>
+            <h4 style="color: #16a085; margin-bottom: 5px;">✅ ${medData.name} পাওয়া যাচ্ছে!</h4>
             <p><strong>ফার্মেসি:</strong> ${medData.shop}</p>
             <p><strong>এলাকা:</strong> 📍 ${medData.area}</p>
             <a href="${medData.mapLink}" target="_blank" class="link-btn" style="background-color: #2980b9; margin-top: 10px;">🗺️ Open in Google Maps</a>
         </div>
     `;
 }
+
 // ==========================================
 // 7. DATA: RESTAURANTS & SURPLUS FOOD (NEW)
-// দিনের শেষে বেঁচে যাওয়া খাবারের ডাটা
+// দিনের শেষে বেঁচে যাওয়া খাবারের ডাটা
 // ==========================================
 const restaurantFoodData = [
     { name: "১. দি ফুড প্যালেস", surplus: true, offerType: "বিনামূল্যে (Donation)", time: "রাত ১০টার পর" },
@@ -242,9 +191,9 @@ function renderFoodData() {
             ? "background: #2ecc71; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold;" 
             : "background: #95a5a6; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold;";
         
-        // খাবার থাকলে সময় এবং ধরন দেখাবে
+        // খাবার থাকলে সময় এবং ধরন দেখাবে
         let extraInfo = item.surplus 
-            ? `<span style="font-size: 13px; color: #d35400; display: block; margin-left: 20px; margin-top: 5px;">🕒 সময়: ${item.time} | 🎁 শর্ত: ${item.offerType}</span>` 
+            ? `<span style="font-size: 13px; color: #d35400; display: block; margin-left: 20px; margin-top: 5px;">🕒 সময়: ${item.time} | 🎁 শর্ত: ${item.offerType}</span>` 
             : "";
 
         restaurantListHTML += `
@@ -259,7 +208,7 @@ function renderFoodData() {
     container.innerHTML = `
         <div class="info-block" style="border-left-color: #e67e22;">
             <h3>🍽️ রেস্টুরেন্ট এবং অতিরিক্ত খাবার (Surplus Food)</h3>
-            <p style="margin-bottom: 15px;">দিনের শেষে বেঁচে যাওয়া খাবার গরিব মানুষদের জন্য বিনামূল্যে বা কম দামে এখানে পাওয়া যায়:</p>
+            <p style="margin-bottom: 15px;">দিনের শেষে বেঁচে যাওয়া খাবার গরিব মানুষদের জন্য বিনামূল্যে বা কম দামে এখানে পাওয়া যায়:</p>
             <ul style="list-style-type: none; padding-left: 0;">
                 ${restaurantListHTML}
             </ul>
@@ -275,16 +224,17 @@ function renderFoodData() {
         </div>
     `;
 }
+
 // ==========================================
 // 8. DATA: JOB & INTERNSHIP VACANCIES (Updated with Local Storage)
 // ==========================================
 const jobVacanciesData = [
     { org: "Kasba Mohila Degree College", role: "Biology Teacher (জীববিজ্ঞান শিক্ষক)", type: "Full-Time", work: "একাদশ ও দ্বাদশ শ্রেণীর জীববিজ্ঞান ক্লাস", seats: 1 },
     { org: "Dhonnobad Printers", role: "Junior Designer", type: "Part-Time", work: "ব্যানার ও ভিজিটিং কার্ড ডিজাইন", seats: 1 },
-    { org: "Maa Pharmacy", role: "Pharmacy Assistant", type: "Intern", work: "ওষুধ গুছিয়ে রাখা ও সাহায্য করা", seats: 2 }
+    { org: "Maa Pharmacy", role: "Pharmacy Assistant", type: "Intern", work: "ওষুধ গুছিয়ে রাখা ও সাহায্য করা", seats: 2 }
 ];
 
-// ফর্ম থেকে ডাটা নিয়ে সেভ করার ফাংশন (সবার নিচে বা উপরে রাখতে পারেন)
+// ফর্ম থেকে ডাটা নিয়ে সেভ করার ফাংশন (সবার নিচে বা উপরে রাখতে পারেন)
 document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById("submit-job-btn");
     if(submitBtn) {
@@ -295,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const seatsNum = document.getElementById("job-seats").value;
 
             if(orgName === "" || roleName === "" || seatsNum === "") {
-                alert("দয়া করে ফর্মের সব তথ্য ঠিকভাবে পূরণ করুন!");
+                alert("দয়া করে ফর্মের সব তথ্য ঠিকভাবে পূরণ করুন!");
                 return;
             }
 
@@ -312,9 +262,9 @@ document.addEventListener('DOMContentLoaded', function() {
             savedJobs.push(newJob);
             localStorage.setItem("customJobs", JSON.stringify(savedJobs));
 
-            alert("✅ নতুন চাকরির খবর সফলভাবে যোগ করা হয়েছে!");
+            alert("✅ নতুন চাকরির খবর সফলভাবে যোগ করা হয়েছে!");
             
-            // ফর্ম খালি করে দেওয়া
+            // ফর্ম খালি করে দেওয়া
             document.getElementById("job-org").value = "";
             document.getElementById("job-role").value = "";
             document.getElementById("job-seats").value = "";
@@ -330,7 +280,7 @@ function renderJobsData() {
     const container = document.getElementById("job-info-container");
     if(!container) return;
 
-    // লোকাল স্টোরেজ থেকে ইউজারের দেওয়া নতুন জবগুলো আনা
+    // লোকাল স্টোরেজ থেকে ইউজারের দেওয়া নতুন জবগুলো আনা
     let savedJobs = JSON.parse(localStorage.getItem("customJobs")) || [];
     
     // আগের ডাটা এবং নতুন ডাটা একসাথে করা
@@ -354,6 +304,27 @@ function renderJobsData() {
     });
 
     container.innerHTML = `
+        <div class="info-block" style="border-left-color: #8e44ad;">
+            <h3>💻 ব্যানার ডিজাইন, ডাটা এন্ট্রি এবং কাজের জায়গা</h3>
+            <p>স্টুডেন্টরা পার্ট-টাইম বা চুক্তিভিত্তিক ডিজাইনের কাজের জন্য নিচের প্রতিষ্ঠানগুলোতে যোগাযোগ করতে পারে:</p>
+            <ul>
+                <li><strong>১. এমএফ কম্পিউটার সেন্টার:</strong> ইমাম পাড়া, কসবা সদর।</li>
+                <li><strong>২. তানভীর ফটোকপি ও কম্পিউটার ট্রেনিং সেন্টার:</strong> বায়েক, সালদানদী, কসবা।</li>
+                <li><strong>৩. কসবা উপজেলা সুপার মার্কেট ও নতুন বাজার:</strong> ডিজিটাল সাইন ও প্রিন্টিং এর প্রচুর কাজ।</li>
+                <li><strong>৪. ধন্যবাদ প্রিন্টার্স (Dhonnobad Printers):</strong> গ্রাফিক্স ডিজাইনের কাজের জন্য চমৎকার প্রতিষ্ঠান। <br>
+                <a href="https://dhonnobadprinters.com/" target="_blank" class="link-btn">🌐 ধন্যবাদ প্রিন্টার্স ওয়েবসাইট ভিজিট করুন</a></li>
+            </ul>
+        </div>
+        
+        <div class="info-block" style="border-left-color: #3498db;">
+            <h3>🚀 স্কিল ডেভেলপমেন্ট ও ট্রেনিং সেন্টার (শেখার জায়গা)</h3>
+            <ul>
+                <li><strong>১. উপজেলা যুব উন্নয়ন অধিদপ্তর:</strong> কসবা উপজেলা পরিষদ চত্বর। (সরকারি সনদের সুবিধাসহ কম খরচে কোর্স)।</li>
+                <li><strong>২. কসবা সরকারি টেকনিক্যাল স্কুল এন্ড কলেজ:</strong> আইটি এবং টেকনিক্যাল শর্ট কোর্স।</li>
+                <li><strong>৩. প্রাইভেট ট্রেনিং সেন্টার:</strong> ইমাম পাড়ার এফএম/এমএফ কম্পিউটার ট্রেনিং সেন্টার, এবং ইউনিয়ন ডিজিটাল সেন্টার (UDC)-সমূহ।</li>
+            </ul>
+        </div>
+
         <div class="info-block" style="border-left-color: #e74c3c; background-color: #fff9f9;">
             <h3>📢 চলমান চাকরির নিয়োগ ও ইন্টার্নশিপ</h3>
             ${jobsHTML}
