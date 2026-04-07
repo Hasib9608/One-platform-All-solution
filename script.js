@@ -16,9 +16,9 @@ const emergencyNumbers = [
 
 // সাংবাদিকের তথ্য (এখানে এডিট করো)
 const localJournalist = {
-    name: "সাংবাদিকের নাম লিখুন", 
-    media: "মিডিয়া বা পত্রিকার নাম",
-    phone: "01XXXXXXXXX" 
+    name: "Saidul Islam (Sr)", 
+    media: "NTV আখাউড়া-কসবা অনলাইন করেসপন্ডেন্ট",
+    phone: "01642-496318" 
 };
 
 // ==========================================
