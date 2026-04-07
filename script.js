@@ -267,85 +267,100 @@ function renderFoodData() {
 }
 
 // ==========================================
-// 🍲 RESTAURANTS & FOOD SHARE RENDERING
+// 8. DATA: JOB & INTERNSHIP VACANCIES 
 // ==========================================
-function renderFoodData() {
-    const container = document.getElementById("food-info-container");
-    if(!container) return;
-    
-    container.innerHTML = `
-        <div class="info-block" style="border-left: 5px solid #9b59b6; padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="color: #8e44ad;">🍱 রেস্টুরেন্ট এবং অতিরিক্ত খাবার (Surplus Food)</h3>
-            <p style="font-size: 0.9rem; margin-bottom: 10px;">দিনের শেষে বেঁচে যাওয়া খাবার গরিব মানুষের জন্য বিনামূল্যে বা কম দামে এখানে পাওয়া যায়:</p>
-            
-            <div style="background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ddd;">
-                <strong>১. দি ফুড প্যালেস</strong> <span style="color: green;">✔ অতিরিক্ত খাবার আছে</span><br>
-                <small>🕒 সময়: রাত ১০টার পর | 🎁 শর্ত: বিনামূল্যে (Donation)</small>
-            </div>
-            
-            <div style="background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ddd;">
-                <strong>২. টেস্টি বাইট রেস্টুরেন্ট</strong> <span style="color: green;">✔ অতিরিক্ত খাবার আছে</span><br>
-                <small>🕒 সময়: রাত ৯:৩০ এর পর | 🎁 শর্ত: অর্ধেক দামে (50% Off)</small>
-            </div>
-            
-            <div style="background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ddd;">
-                <strong>৩. ঢাকা কাচ্চি ডাই</strong> <span style="color: red;">✘ খাবার শেষ</span>
-            </div>
-        </div>
+const jobVacanciesData = [
+    { org: "Kasba Mohila Degree College", role: "Biology Teacher (জীববিজ্ঞান শিক্ষক)", type: "Full-Time", work: "একাদশ ও দ্বাদশ শ্রেণীর জীববিজ্ঞান ক্লাস", seats: 1 },
+    { org: "Dhonnobad Printers", role: "Junior Designer", type: "Part-Time", work: "ব্যানার ও ভিজিটিং কার্ড ডিজাইন", seats: 1 },
+    { org: "Maa Pharmacy", role: "Pharmacy Assistant", type: "Intern", work: "ওষুধ গুছিয়ে রাখা ও সাহায্য করা", seats: 2 }
+];
 
-        <div class="info-block" style="border-left: 5px solid #27ae60; padding: 15px; background: #fff; border-radius: 8px;">
-            <h3 style="color: #2ecc71;">🧡 কমিউনিটি ফুড শেয়ার / সেচ্ছাসেবী সংগঠন</h3>
-            <p style="font-size: 0.9rem;">কসবায় বিভিন্ন সংগঠন বিনামূল্যে খাবার বিতরণ বা ত্রাণ দেওয়ার কাজ করে:</p>
-            <ul>
-                <li><strong>স্থানীয় সেচ্ছাসেবী ও যুব সংগঠন:</strong> ছাত্র কল্যাণ পরিষদ, ব্লাড ডোনেশন ক্লাব ইত্যাদি।</li>
-                <li><strong>জাতীয় পর্যায়ের ফাউন্ডেশন:</strong> আস-সুন্নাহ ফাউন্ডেশন, বিদ্যানন্দ ফাউন্ডেশন।</li>
-            </ul>
-        </div>
-    `;
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const submitBtn = document.getElementById("submit-job-btn");
+    if(submitBtn) {
+        submitBtn.addEventListener("click", function() {
+            const orgName = document.getElementById("job-org").value;
+            const roleName = document.getElementById("job-role").value;
+            const jobType = document.getElementById("job-type").value;
+            const seatsNum = document.getElementById("job-seats").value;
 
-// ==========================================
-// 💻 LOCAL SKILLS & JOB OPPORTUNITIES RENDERING
-// ==========================================
+            if(orgName === "" || roleName === "" || seatsNum === "") {
+                alert("দয়া করে ফর্মের সব তথ্য ঠিকভাবে পূরণ করুন!");
+                return;
+            }
+
+            const newJob = {
+                org: orgName,
+                role: roleName,
+                type: jobType,
+                work: "নতুন পোস্ট করা কাজ", 
+                seats: seatsNum
+            };
+
+            let savedJobs = JSON.parse(localStorage.getItem("customJobs")) || [];
+            savedJobs.push(newJob);
+            localStorage.setItem("customJobs", JSON.stringify(savedJobs));
+
+            alert("✅ নতুন চাকরির খবর সফলভাবে যোগ করা হয়েছে!");
+            
+            document.getElementById("job-org").value = "";
+            document.getElementById("job-role").value = "";
+            document.getElementById("job-seats").value = "";
+
+            renderJobsData();
+        });
+    }
+});
+
 function renderJobsData() {
     const container = document.getElementById("job-info-container");
     if(!container) return;
-    
+
+    let savedJobs = JSON.parse(localStorage.getItem("customJobs")) || [];
+    const allJobs = [...jobVacanciesData, ...savedJobs];
+
+    let jobsHTML = "";
+    allJobs.forEach(job => {
+        let badgeColor = job.type === "Intern" ? "#3498db" : (job.type === "Part-Time" ? "#f39c12" : "#e74c3c");
+
+        jobsHTML += `
+            <div style="background: #ffffff; border: 1px solid #dcdde1; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ecf0f1; padding-bottom: 8px; margin-bottom: 10px;">
+                    <strong style="color: #2c3e50; font-size: 16px;">🏢 ${job.org}</strong>
+                    <span style="background: ${badgeColor}; color: white; padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold;">${job.type}</span>
+                </div>
+                <p style="margin: 5px 0; font-size: 14px; color: #34495e;"><strong>📌 পদের নাম:</strong> ${job.role}</p>
+                <p style="margin: 5px 0; font-size: 14px; color: #34495e;"><strong>👨‍💻 কাজের ধরন:</strong> ${job.work}</p>
+                <p style="margin: 5px 0; font-size: 14px; font-weight: bold; color: #d35400;">🪑 খালি পদ: ${job.seats} টি</p>
+            </div>
+        `;
+    });
+
     container.innerHTML = `
-        <div class="info-block" style="border-left: 5px solid #2980b9; padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="color: #3498db;">🖥️ ব্যানার ডিজাইন, ডাটা এন্ট্রি এবং কাজের জায়গা</h3>
-            <p style="font-size: 0.9rem;">স্টুডেন্টরা পার্ট-টাইম কাজের জন্য নিচের প্রতিষ্ঠানগুলোতে যোগাযোগ করতে পারে:</p>
-            <ul style="list-style: none; padding: 0;">
-                <li style="padding: 8px; border-bottom: 1px solid #eee;">১. এম.এফ কম্পিউটার সেন্টার: ইমাম পাড়া, কসবা সদর।</li>
-                <li style="padding: 8px; border-bottom: 1px solid #eee;">২. তানভীর ফটোকপি ও কম্পিউটার ট্রেনিং সেন্টার: বায়েক, কসবা।</li>
-                <li style="padding: 8px;">৩. ধন্যবাদ প্রিন্টার্স (Dhonnobad Printers): গ্রাফিক্স ডিজাইনের কাজের জন্য।</li>
-            </ul>
-        </div>
-
-        <div class="info-block" style="border-left: 5px solid #e67e22; padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 20px;">
-            <h3 style="color: #d35400;">🚀 স্কিল ডেভেলপমেন্ট ও ট্রেনিং সেন্টার</h3>
+        <div class="info-block" style="border-left-color: #8e44ad;">
+            <h3>💻 ব্যানার ডিজাইন, ডাটা এন্ট্রি এবং কাজের জায়গা</h3>
+            <p>স্টুডেন্টরা পার্ট-টাইম বা চুক্তিভিত্তিক ডিজাইনের কাজের জন্য নিচের প্রতিষ্ঠানগুলোতে যোগাযোগ করতে পারে:</p>
             <ul>
-                <li><strong>উপজেলা যুব উন্নয়ন অধিদপ্তর:</strong> সরকারি সনদসহ কোর্স।</li>
-                <li><strong>কসবা সরকারি টেকনিক্যাল স্কুল এন্ড কলেজ:</strong> আইটি ও শর্ট কোর্স।</li>
+                <li><strong>১. এমএফ কম্পিউটার সেন্টার:</strong> ইমাম পাড়া, কসবা সদর।</li>
+                <li><strong>২. তানভীর ফটোকপি ও কম্পিউটার ট্রেনিং সেন্টার:</strong> বায়েক, সালদানদী, কসবা।</li>
+                <li><strong>৩. কসবা উপজেলা সুপার মার্কেট ও নতুন বাজার:</strong> ডিজিটাল সাইন ও প্রিন্টিং এর প্রচুর কাজ।</li>
+                <li><strong>৪. ধন্যবাদ প্রিন্টার্স (Dhonnobad Printers):</strong> গ্রাফিক্স ডিজাইনের কাজের জন্য চমৎকার প্রতিষ্ঠান। <br>
+                <a href="https://dhonnobadprinters.com/" target="_blank" class="link-btn">🌐 ধন্যবাদ প্রিন্টার্স ওয়েবসাইট ভিজিট করুন</a></li>
+            </ul>
+        </div>
+        
+        <div class="info-block" style="border-left-color: #3498db;">
+            <h3>🚀 স্কিল ডেভেলপমেন্ট ও ট্রেনিং সেন্টার (শেখার জায়গা)</h3>
+            <ul>
+                <li><strong>১. উপজেলা যুব উন্নয়ন অধিদপ্তর:</strong> কসবা উপজেলা পরিষদ চত্বর। (সরকারি সনদের সুবিধাসহ কম খরচে কোর্স)।</li>
+                <li><strong>২. কসবা সরকারি টেকনিক্যাল স্কুল এন্ড কলেজ:</strong> আইটি এবং টেকনিক্যাল শর্ট কোর্স।</li>
+                <li><strong>৩. প্রাইভেট ট্রেনিং সেন্টার:</strong> ইমাম পাড়ার এফএম/এমএফ কম্পিউটার ট্রেনিং সেন্টার, এবং ইউনিয়ন ডিজিটাল সেন্টার (UDC)-সমূহ।</li>
             </ul>
         </div>
 
-        <div class="info-block" style="border-left: 5px solid #c0392b; padding: 15px; background: #fff; border-radius: 8px;">
-            <h3 style="color: #e74c3c;">📢 চলমান চাকরির নিয়োগ ও ইন্টার্নশিপ</h3>
-            
-            <div style="border: 1px solid #eee; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                <span style="background: #e74c3c; color: #fff; padding: 2px 6px; border-radius: 3px; float: right; font-size: 0.7rem;">Full-Time</span>
-                <strong>🏫 Kasba Mohila Degree College</strong><br>
-                <small>📌 পদের নাম: Biology Teacher</small><br>
-                <small>🪑 খালি পদ: ১ টি</small>
-            </div>
-
-            <div style="border: 1px solid #eee; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                <span style="background: #f39c12; color: #fff; padding: 2px 6px; border-radius: 3px; float: right; font-size: 0.7rem;">Part-Time</span>
-                <strong>🖨️ Dhonnobad Printers</strong><br>
-                <small>📌 পদের নাম: Junior Designer</small><br>
-                <small>🪑 খালি পদ: ১ টি</small>
-            </div>
+        <div class="info-block" style="border-left-color: #e74c3c; background-color: #fff9f9;">
+            <h3>📢 চলমান চাকরির নিয়োগ ও ইন্টার্নশিপ</h3>
+            ${jobsHTML}
         </div>
     `;
 }
