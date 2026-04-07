@@ -4,7 +4,7 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxudCdVUk4YlaDwUAQlbCjE-4QWEJiKlyq-C4og9B1_qMiJghS7DG28oiLgQ4OCuOHiJA/exec";
 
 // ==========================================
-// 2. DATA: EMERGENCY NUMBERS (BANGLADESH)
+// 2. DATA: EMERGENCY & MEDIA CONTACTS
 // ==========================================
 const emergencyNumbers = [
     { title: "National Emergency", number: "999", desc: "Police, Fire Service, Ambulance" },
@@ -14,8 +14,15 @@ const emergencyNumbers = [
     { title: "Disaster Warning", number: "1090", desc: "Weather & natural disaster info" }
 ];
 
+// সাংবাদিকের তথ্য (এখানে এডিট করো)
+const localJournalist = {
+    name: "সাংবাদিকের নাম লিখুন", 
+    media: "মিডিয়া বা পত্রিকার নাম",
+    phone: "01XXXXXXXXX" 
+};
+
 // ==========================================
-// 3. DATA: STATIC BLOOD DONORS (Default)
+// 3. DATA: STATIC BLOOD DONORS
 // ==========================================
 const bloodDonors = [
     { name: "Kasba Life Care Diagnostic", group: "Any", area: "kasba sadar", phone: "01977-964599", type: "Center" },
@@ -38,6 +45,7 @@ const medicineDatabase = {
 // ==========================================
 window.onload = function() {
     renderEmergency(); 
+    renderJournalist(); 
     renderHospitals(); 
     renderFoodData();  
     renderJobsData();  
@@ -55,6 +63,19 @@ function renderEmergency() {
             </div>
         `;
     });
+}
+
+function renderJournalist() {
+    const grid = document.getElementById("emergency-grid");
+    if(!grid) return;
+    grid.innerHTML += `
+        <div class="card" style="border: 2px solid #3498db; background: #f0f7ff;">
+            <h3 style="color: #2980b9;">📰 Press / Media</h3>
+            <h4 style="margin: 5px 0;">${localJournalist.name}</h4>
+            <p style="font-weight: bold; margin-bottom: 10px;">${localJournalist.media}</p>
+            <button onclick="window.location.href='tel:${localJournalist.phone}'" style="background: #2980b9; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight:bold;">📞 Call Support</button>
+        </div>
+    `;
 }
 
 function renderHospitals() {
@@ -75,21 +96,21 @@ function renderHospitals() {
 // 6. BLOOD DONOR LOGIC (GOOGLE SHEETS)
 // ==========================================
 
-// --- নতুন ডোনার সেভ করা (Google Sheet এ পাঠাবে) ---
 document.addEventListener('DOMContentLoaded', function() {
     const submitDonorBtn = document.getElementById("submit-donor-btn");
     
     if(submitDonorBtn) {
         submitDonorBtn.addEventListener("click", function() {
+            // ফোন নম্বরের শুরুতে একটি ' যোগ করা হয়েছে যাতে Google Sheet ০ না কাটে
             const donorData = {
                 name: document.getElementById("donor-name").value,
                 group: document.getElementById("new-donor-group").value,
                 area: document.getElementById("new-donor-area").value,
-                phone: document.getElementById("donor-phone").value
+                phone: "'" + document.getElementById("donor-phone").value 
             };
 
-            if(!donorData.name || !donorData.group || !donorData.area || !donorData.phone) {
-                alert("দয়া করে সব তথ্য দিন!"); return;
+            if(!donorData.name || !donorData.group || !donorData.area || donorData.phone === "'") {
+                alert("দয়া করে সব তথ্য দিন!"); return;
             }
 
             submitDonorBtn.innerText = "Saving...";
@@ -113,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// --- ব্লাড ডোনার খোঁজা (Google Sheet থেকে ডাটা আনবে) ---
 async function searchBlood() {
     const group = document.getElementById("blood-group").value;
     const area = document.getElementById("blood-area").value.toLowerCase().trim();
@@ -124,8 +144,6 @@ async function searchBlood() {
     try {
         const response = await fetch(SCRIPT_URL);
         const onlineDonors = await response.json();
-        
-        // স্ট্যাটিক ডাটা এবং অনলাইন ডাটা একসাথে করা
         const allDonors = [...bloodDonors, ...onlineDonors];
 
         const filtered = allDonors.filter(d => 
@@ -142,7 +160,7 @@ async function searchBlood() {
                 <div class="result-card" style="border: 1px solid #e67e22; padding: 12px; margin-top: 10px; border-radius: 8px; background: #fff;">
                     <strong style="color: #c0392b;">${d.name}</strong> (Group: ${d.group})<br>
                     📍 Area: ${d.area} <br>
-                    <button onclick="alert('Calling ${d.phone}')" style="background:#e67e22; color:#fff; border:none; padding:5px 10px; border-radius:4px; margin-top:5px; cursor:pointer;">📞 Call: ${d.phone}</button>
+                    <button onclick="window.location.href='tel:${d.phone}'" style="background:#e67e22; color:#fff; border:none; padding:8px 15px; border-radius:4px; margin-top:5px; cursor:pointer; font-weight:bold;">📞 Call: ${d.phone}</button>
                 </div>`;
             });
         }
@@ -172,5 +190,5 @@ function renderFoodData() {
 function renderJobsData() {
     const container = document.getElementById("job-info-container");
     if(!container) return;
-    container.innerHTML = `<h3>📢 Careers & Internships</h3><p>Postings will appear here.</p>`;
+    container.innerHTML = `<h3>📢 Careers & Internships</h3><p>Postings will appear here.</p>`; 
 }
