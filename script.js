@@ -1,5 +1,10 @@
 // ==========================================
-// 1. DATA: EMERGENCY NUMBERS (BANGLADESH)
+// 1. CONFIGURATION & URLS
+// ==========================================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxudCdVUk4YlaDwUAQlbCjE-4QWEJiKlyq-C4og9B1_qMiJghS7DG28oiLgQ4OCuOHiJA/exec";
+
+// ==========================================
+// 2. DATA: EMERGENCY NUMBERS (BANGLADESH)
 // ==========================================
 const emergencyNumbers = [
     { title: "National Emergency", number: "999", desc: "Police, Fire Service, Ambulance" },
@@ -10,17 +15,15 @@ const emergencyNumbers = [
 ];
 
 // ==========================================
-// 2. DATA: BLOOD DONORS
+// 3. DATA: STATIC BLOOD DONORS (Default)
 // ==========================================
 const bloodDonors = [
     { name: "Kasba Life Care Diagnostic", group: "Any", area: "kasba sadar", phone: "01977-964599", type: "Center" },
-    { name: "Blood for B.Baria Org", group: "Any", area: "kasba sadar", phone: "Available", type: "Organization" },
-    { name: "Rahim (Volunteer)", group: "O+", area: "kuti", phone: "017XX-XXXXXX", type: "Person" },
-    { name: "Sumon (Volunteer)", group: "A+", area: "mehari", phone: "018XX-XXXXXX", type: "Person" }
+    { name: "Blood for B.Baria Org", group: "Any", area: "kasba sadar", phone: "Available", type: "Organization" }
 ];
 
 // ==========================================
-// 3. DATA: MEDICINE DATABASE 
+// 4. DATA: MEDICINE DATABASE 
 // ==========================================
 const medicineDatabase = {
     "napa": { name: "Napa / Paracetamol", shop: "Maa Pharmacy", area: "কসবা নতুন বাজার", stock: "Available", mapLink: "https://www.google.com/maps/search/Pharmacy+in+Kasba+Natun+Bazar" },
@@ -31,15 +34,17 @@ const medicineDatabase = {
 };
 
 // ==========================================
-// 4. INITIALIZATION & RENDERING
+// 4.2 . INITIALIZATION & RENDERING
+// ওয়েবসাইট ওপেন হলেই এই ফাংশনগুলো রান হয়ে সব ডাটা স্ক্রিনে দেখাবে
 // ==========================================
 window.onload = function() {
-    renderEmergency(); 
-    renderHospitals(); 
-    renderFoodData();  
-    renderJobsData();  
+    renderEmergency(); // ইমার্জেন্সি নাম্বার লোড করবে
+    renderHospitals(); // হাসপাতাল ও ম্যাপ লোড করবে
+    renderFoodData();  // রেস্টুরেন্ট ডাটা লোড করবে
+    renderJobsData();  // জব ও স্কিল ডাটা লোড করবে
 };
 
+// ইমার্জেন্সি সেকশন দেখানোর ফাংশন
 function renderEmergency() {
     const grid = document.getElementById("emergency-grid");
     emergencyNumbers.forEach(item => {
@@ -53,6 +58,7 @@ function renderEmergency() {
     });
 }
 
+// হাসপাতাল সেকশন দেখানোর ফাংশন (Map Link সহ)
 function renderHospitals() {
     const container = document.getElementById("hospital-info-container");
     container.innerHTML = `
@@ -102,119 +108,152 @@ function renderHospitals() {
     `;
 }
 
+
 // ==========================================
-// 5. SEARCH & ADD BLOOD FUNCTION (UPDATED)
+// 5. INITIALIZATION & RENDERING
 // ==========================================
+window.onload = function() {
+    renderEmergency(); 
+    renderHospitals(); 
+    renderFoodData();  
+    renderJobsData();  
+};
 
-// --- নতুন ব্লাড ডোনার ফর্ম সাবমিট করার লজিক ---
-document.addEventListener('DOMContentLoaded', function() {
-    const submitDonorBtn = document.getElementById("submit-donor-btn");
-    
-    if(submitDonorBtn) {
-        submitDonorBtn.addEventListener("click", function() {
-            const name = document.getElementById("donor-name").value;
-            const group = document.getElementById("new-donor-group").value;
-            const area = document.getElementById("new-donor-area").value;
-            const phone = document.getElementById("donor-phone").value;
-
-            // ফর্মের কোনো ফিল্ড ফাঁকা আছে কি না চেক করা
-            if(name === "" || group === "" || area === "" || phone === "") {
-                alert("দয়া করে ফর্মের সব তথ্য সঠিকভাবে পূরণ করুন!");
-                return;
-            }
-
-            // নতুন ডোনারের ডেটা তৈরি
-            const newDonor = {
-                name: name,
-                group: group,
-                area: area,
-                phone: phone,
-                type: "Person"
-            };
-
-            // লোকাল স্টোরেজে ডেটা সেভ করা
-            let savedDonors = JSON.parse(localStorage.getItem("customDonors")) || [];
-            savedDonors.push(newDonor);
-            localStorage.setItem("customDonors", JSON.stringify(savedDonors));
-
-            alert("✅ ধন্যবাদ! আপনাকে ব্লাড ডোনার হিসেবে সফলভাবে যুক্ত করা হয়েছে।");
-            
-            // সাবমিট করার পর ফর্মের লেখাগুলো মুছে ফেলা
-            document.getElementById("donor-name").value = "";
-            document.getElementById("new-donor-group").value = "";
-            document.getElementById("new-donor-area").value = "";
-            document.getElementById("donor-phone").value = "";
-
-            // কেউ সার্চ করে থাকলে সাথে সাথে লিস্ট আপডেট করা
-            searchBlood();
-        });
-    }
-});
-
-// --- ব্লাড ডোনার খোঁজার লজিক ---
-function searchBlood() {
-    const group = document.getElementById("blood-group").value;
-    const area = document.getElementById("blood-area").value.toLowerCase().trim();
-    const res = document.getElementById("blood-results");
-    res.innerHTML = "";
-    
-    // লোকাল স্টোরেজ থেকে নতুন ডোনারদের তথ্য নিয়ে আসা
-    let savedDonors = JSON.parse(localStorage.getItem("customDonors")) || [];
-    
-    // আপনার আগের ডাটাবেজ (bloodDonors) এবং নতুন ডাটা একসাথে করা
-    const allDonors = [...bloodDonors, ...savedDonors];
-
-    // ইউজার যে ব্লাড গ্রুপ এবং এরিয়া সিলেক্ট করেছে তার সাথে মেলানো
-    const results = allDonors.filter(d => 
-        (d.group === "Any" || group === "" || d.group === group) && 
-        (area === "" || d.area.toLowerCase().includes(area))
-    );
-
-    // রেজাল্ট দেখানো
-    if(results.length === 0) {
-        res.innerHTML = "<p style='color:red; font-weight:bold; text-align:center;'>এই এলাকায় এই গ্রুপের কোনো ডোনার পাওয়া যায়নি। জরুরি প্রয়োজনে নিকটস্থ হাসপাতালে যোগাযোগ করুন।</p>";
-    } else {
-        results.forEach(d => {
-            const badge = d.type === "Person" ? "badge-safe" : "badge-org";
-            res.innerHTML += `
-            <div class="result-card" style="background: #fff; border: 1px solid #e67e22; padding: 12px; border-radius: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                <div>
-                    <strong style="color: #c0392b; font-size: 16px;">${d.name}</strong> 
-                    <span style="background: #e74c3c; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; margin-left: 5px;">${d.type}</span><br>
-                    <span style="display:inline-block; margin-top:5px;">🩸 Group: <strong>${d.group}</strong> | 📍 ${d.area.charAt(0).toUpperCase() + d.area.slice(1)}</span>
-                </div>
-                <button onclick="alert('Calling ${d.phone}...') " style="background: #e67e22; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight:bold;">📞 Call</button>
-            </div>`;
-        });
-    }
+function renderEmergency() {
+    const grid = document.getElementById("emergency-grid");
+    if(!grid) return;
+    emergencyNumbers.forEach(item => {
+        grid.innerHTML += `
+            <div class="card">
+                <h3>${item.number}</h3>
+                <h4>${item.title}</h4>
+                <p>${item.desc}</p>
+            </div>
+        `;
+    });
 }
 
-// ==========================================
-// 6. SEARCH MEDICINE FUNCTION 
-// ==========================================
-function findMedicineShop() {
-    const medId = document.getElementById("medicine-select").value;
-    const resultDiv = document.getElementById("medicine-shop-result");
-    
-    if (!medId) {
-        resultDiv.innerHTML = "<p style='color: red;'>অনুগ্রহ করে একটি ঔষধ সিলেক্ট করুন!</p>";
-        return;
-    }
-
-    const medData = medicineDatabase[medId];
-    
-    resultDiv.innerHTML = `
-        <div style="background: #e8f8f5; padding: 15px; border-radius: 8px; display: inline-block; text-align: left; border: 1px solid #1abc9c;">
-            <h4 style="color: #16a085; margin-bottom: 5px;">✅ ${medData.name} পাওয়া যাচ্ছে!</h4>
-            <p><strong>ফার্মেসি:</strong> ${medData.shop}</p>
-            <p><strong>এলাকা:</strong> 📍 ${medData.area}</p>
-            <a href="${medData.mapLink}" target="_blank" class="link-btn" style="background-color: #2980b9; margin-top: 10px;">🗺️ Open in Google Maps</a>
+function renderHospitals() {
+    const container = document.getElementById("hospital-info-container");
+    if(!container) return;
+    container.innerHTML = `
+        <div class="info-block" style="border-left-color: #27ae60;">
+            <h3>🏥 সরকারি হাসপাতাল (Govt. Hospitals)</h3>
+            <p>কসবায় সরকারি স্বাস্থ্যসেবার প্রধান কেন্দ্র একটিই:</p>
+            <ul>
+                <li><strong>Kasba Upazila Health Complex:</strong> কসবা সদর। <a href="#" target="_blank">🗺️ Map</a></li>
+            </ul>
         </div>
     `;
 }
 
 // ==========================================
-// 7. DATA: RESTAURANTS & SURPLUS FOOD
+// 6. BLOOD DONOR LOGIC (GOOGLE SHEETS)
+// ==========================================
+
+// --- নতুন ডোনার সেভ করা (Google Sheet এ পাঠাবে) ---
+document.addEventListener('DOMContentLoaded', function() {
+    const submitDonorBtn = document.getElementById("submit-donor-btn");
+    
+    if(submitDonorBtn) {
+        submitDonorBtn.addEventListener("click", function() {
+            const donorData = {
+                name: document.getElementById("donor-name").value,
+                group: document.getElementById("new-donor-group").value,
+                area: document.getElementById("new-donor-area").value,
+                phone: document.getElementById("donor-phone").value
+            };
+
+            if(!donorData.name || !donorData.group || !donorData.area || !donorData.phone) {
+                alert("দয়া করে সব তথ্য দিন!"); return;
+            }
+
+            submitDonorBtn.innerText = "Saving...";
+            submitDonorBtn.disabled = true;
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(donorData)
+            })
+            .then(res => res.json())
+            .then(response => {
+                alert("✅ অভিনন্দন! আপনার তথ্য Google Sheet এ সেভ হয়েছে।");
+                location.reload(); 
+            })
+            .catch(error => {
+                alert("ভুল হয়েছে: " + error);
+                submitDonorBtn.innerText = "Submit Again";
+                submitDonorBtn.disabled = false;
+            });
+        });
+    }
+});
+
+// --- ব্লাড ডোনার খোঁজা (Google Sheet থেকে ডাটা আনবে) ---
+async function searchBlood() {
+    const group = document.getElementById("blood-group").value;
+    const area = document.getElementById("blood-area").value.toLowerCase().trim();
+    const resDiv = document.getElementById("blood-results");
+    
+    resDiv.innerHTML = "<p style='text-align:center;'>Searching in Live Database...</p>";
+
+    try {
+        const response = await fetch(SCRIPT_URL);
+        const onlineDonors = await response.json();
+        
+        // স্ট্যাটিক ডাটা এবং অনলাইন ডাটা একসাথে করা
+        const allDonors = [...bloodDonors, ...onlineDonors];
+
+        const filtered = allDonors.filter(d => 
+            (d.group === "Any" || group === "" || d.group === group) && 
+            (area === "" || d.area.toLowerCase().includes(area))
+        );
+
+        resDiv.innerHTML = "";
+        if(filtered.length === 0) {
+            resDiv.innerHTML = "<p style='color:red; text-align:center;'>দুঃখিত, কোনো ডোনার পাওয়া যায়নি!</p>";
+        } else {
+            filtered.forEach(d => {
+                resDiv.innerHTML += `
+                <div class="result-card" style="border: 1px solid #e67e22; padding: 12px; margin-top: 10px; border-radius: 8px; background: #fff;">
+                    <strong style="color: #c0392b;">${d.name}</strong> (Group: ${d.group})<br>
+                    📍 Area: ${d.area} <br>
+                    <button onclick="alert('Calling ${d.phone}')" style="background:#e67e22; color:#fff; border:none; padding:5px 10px; border-radius:4px; margin-top:5px; cursor:pointer;">📞 Call: ${d.phone}</button>
+                </div>`;
+            });
+        }
+    } catch (err) {
+        resDiv.innerHTML = "<p style='color:red;'>ডাটা লোড করতে সমস্যা হচ্ছে। ইন্টারনেট চেক করুন।</p>";
+    }
+}
+
+// ==========================================
+// 7.1 . MEDICINE & FOOD RENDERING (OTHERS)
+// ==========================================
+
+function findMedicineShop() {
+    const medId = document.getElementById("medicine-select").value;
+    const resultDiv = document.getElementById("medicine-shop-result");
+    if (!medId) return;
+    const medData = medicineDatabase[medId];
+    resultDiv.innerHTML = `<div style="padding:10px; background:#e8f8f5; border:1px solid #1abc9c;">✅ ${medData.name} - ${medData.shop} (${medData.area})</div>`;
+}
+
+function renderFoodData() {
+    const container = document.getElementById("food-info-container");
+    if(!container) return;
+    container.innerHTML = `<h3>🍽️ Surplus Food Info</h3><p>Check local volunteer groups for updates.</p>`;
+}
+
+function renderJobsData() {
+    const container = document.getElementById("job-info-container");
+    if(!container) return;
+    container.innerHTML = `<h3>📢 Careers & Internships</h3><p>Postings will appear here.</p>`;
+}
+
+// ==========================================
+// 7. DATA: RESTAURANTS & SURPLUS FOOD (NEW)
+// দিনের শেষে বেঁচে যাওয়া খাবারের ডাটা
 // ==========================================
 const restaurantFoodData = [
     { name: "১. দি ফুড প্যালেস", surplus: true, offerType: "বিনামূল্যে (Donation)", time: "রাত ১০টার পর" },
@@ -224,15 +263,19 @@ const restaurantFoodData = [
     { name: "৫. কাচ্চি ডাইন রেস্টুরেন্ট", surplus: false, offerType: "খাবার শেষ", time: "-" }
 ];
 
+// ফুড ও রেস্টুরেন্ট সেকশন দেখানোর ফাংশন (আপডেটেড)
 function renderFoodData() {
     const container = document.getElementById("food-info-container");
 
+    // রেস্টুরেন্ট লিস্ট এবং ব্যাজ তৈরি করার লজিক
     let restaurantListHTML = "";
     restaurantFoodData.forEach(item => {
+        // যদি খাবার থাকে তাহলে সবুজ ব্যাজ, না থাকলে ছাই রঙের ব্যাজ
         let badgeStyle = item.surplus 
             ? "background: #2ecc71; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold;" 
             : "background: #95a5a6; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold;";
         
+        // খাবার থাকলে সময় এবং ধরন দেখাবে
         let extraInfo = item.surplus 
             ? `<span style="font-size: 13px; color: #d35400; display: block; margin-left: 20px; margin-top: 5px;">🕒 সময়: ${item.time} | 🎁 শর্ত: ${item.offerType}</span>` 
             : "";
@@ -266,8 +309,13 @@ function renderFoodData() {
     `;
 }
 
+
+
+
+
+
 // ==========================================
-// 8. DATA: JOB & INTERNSHIP VACANCIES 
+// 8. DATA: JOB & INTERNSHIP VACANCIES (Updated with Local Storage)
 // ==========================================
 const jobVacanciesData = [
     { org: "Kasba Mohila Degree College", role: "Biology Teacher (জীববিজ্ঞান শিক্ষক)", type: "Full-Time", work: "একাদশ ও দ্বাদশ শ্রেণীর জীববিজ্ঞান ক্লাস", seats: 1 },
@@ -275,6 +323,7 @@ const jobVacanciesData = [
     { org: "Maa Pharmacy", role: "Pharmacy Assistant", type: "Intern", work: "ওষুধ গুছিয়ে রাখা ও সাহায্য করা", seats: 2 }
 ];
 
+// ফর্ম থেকে ডাটা নিয়ে সেভ করার ফাংশন (সবার নিচে বা উপরে রাখতে পারেন)
 document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById("submit-job-btn");
     if(submitBtn) {
@@ -293,30 +342,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 org: orgName,
                 role: roleName,
                 type: jobType,
-                work: "নতুন পোস্ট করা কাজ", 
+                work: "নতুন পোস্ট করা কাজ", // ডিফল্ট কাজ
                 seats: seatsNum
             };
 
+            // Local Storage এ সেভ করা
             let savedJobs = JSON.parse(localStorage.getItem("customJobs")) || [];
             savedJobs.push(newJob);
             localStorage.setItem("customJobs", JSON.stringify(savedJobs));
 
             alert("✅ নতুন চাকরির খবর সফলভাবে যোগ করা হয়েছে!");
             
+            // ফর্ম খালি করে দেওয়া
             document.getElementById("job-org").value = "";
             document.getElementById("job-role").value = "";
             document.getElementById("job-seats").value = "";
 
+            // ডাটা রিফ্রেশ করা
             renderJobsData();
         });
     }
 });
 
+// স্কিল ও জব সেকশন দেখানোর ফাংশন (আপডেটেড)
 function renderJobsData() {
     const container = document.getElementById("job-info-container");
     if(!container) return;
 
+    // লোকাল স্টোরেজ থেকে ইউজারের দেওয়া নতুন জবগুলো আনা
     let savedJobs = JSON.parse(localStorage.getItem("customJobs")) || [];
+    
+    // আগের ডাটা এবং নতুন ডাটা একসাথে করা
     const allJobs = [...jobVacanciesData, ...savedJobs];
 
     let jobsHTML = "";
