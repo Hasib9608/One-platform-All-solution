@@ -17,7 +17,7 @@ const emergencyNumbers = [
     { 
         title: "Saidul Islam", 
         number: "01642-496318",
-        desc: "NTV আখাউড়া-কসবা অনলাইন করেসপন্ডেন্ট" 
+        desc: "NTV আখাউড়া-কসবা অনলাইন করেসপন্ডেন্ট" 
     }
 ];
 
@@ -64,16 +64,21 @@ const jobVacanciesData = [
 // RENDER FUNCTIONS (FULL VERSION)
 // ==========================================
 
+// ✅ নতুন কল বাটন সহ আপডেট করা ইমার্জেন্সি ফাংশন
 function renderEmergency() {
     const grid = document.getElementById("emergency-grid");
     if (!grid) return;
     grid.innerHTML = "";
     emergencyNumbers.forEach(item => {
         grid.innerHTML += `
-            <div class="card">
-                <h3>${item.number}</h3>
-                <h4>${item.title}</h4>
-                <p>${item.desc}</p>
+            <div class="card" style="padding: 15px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
+                <h3 style="color: #e74c3c; margin-bottom: 5px;">${item.number}</h3>
+                <h4 style="margin: 5px 0;">${item.title}</h4>
+                <p style="color: #555; margin-bottom: 15px;">${item.desc}</p>
+                
+                <a href="tel:${item.number}" style="background:#27ae60; color:#fff; text-decoration:none; padding:8px 15px; border-radius:5px; font-weight:bold; display:inline-block;">
+                    📞 Call Now
+                </a>
             </div>
         `;
     });
@@ -229,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             if (!donorData.name || !donorData.group || !donorData.area || !donorData.phone) {
-                alert("দয়া করে সব তথ্য দিন!");
+                alert("দয়া করে সব তথ্য দিন!");
                 return;
             }
 
